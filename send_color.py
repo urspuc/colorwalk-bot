@@ -9,12 +9,14 @@ with open("colors.json", "r", encoding="utf-8") as f:
 with open("phrases.json", "r", encoding="utf-8") as f:
     phrases = json.load(f)
 
-color = random.choice(colors)
+color_name, color_emoji = random.choice(colors)
 phrase = random.choice(phrases)
 webhook_url = os.environ["DISCORD_WEBHOOK_URL"]
 thread_id = os.environ["DISCORD_THREAD_ID"]
 
-message = f"🎨 今天的 ColorWalk 颜色是：**{color}**\n{phrase}"
+color_display = f"{color_emoji} {color_name}" if color_emoji else color_name
+
+message = f"🎨 今天的 ColorWalk 颜色是：**{color_display}**\n{phrase}"
 
 response = requests.post(
     webhook_url,
@@ -22,4 +24,4 @@ response = requests.post(
     json={"content": message}
 )
 
-print(f"发送：{color}，{phrase}，状态码：{response.status_code}")
+print(f"发送：{color_display}，状态码：{response.status_code}")
